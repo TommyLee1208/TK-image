@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Halloween Surprise QR Card</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { display: grid; min-height: 100vh; margin: 0; place-items: center; padding: 24px; color: #eee4d4; background: #080609; font-family: Arial, sans-serif; }
+      .card { width: min(100%, 390px); padding: 42px 32px 34px; border: 1px solid #3e323d; border-radius: 28px; text-align: center; background: radial-gradient(circle at 50% 0, #33232d, #100c12 52%); box-shadow: 0 24px 80px #000; }
+      .eyebrow { margin: 0 0 14px; color: #ef5b2a; font-size: 11px; font-weight: 800; letter-spacing: .28em; }
+      h1 { margin: 0; font: 400 42px/.95 Georgia, serif; letter-spacing: -.05em; }
+      .qr-shell { width: 230px; margin: 32px auto 25px; padding: 14px; border-radius: 22px; background: #f3ead9; box-shadow: 0 0 0 6px rgba(239,91,42,.13); }
+      #qr { display: block; width: 100%; aspect-ratio: 1; border-radius: 10px; }
+      .prompt { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .hint { margin: 10px 0 0; color: #9c9098; font: italic 12px Georgia, serif; }
+      .setup { width: min(100%, 390px); margin-top: 16px; color: #928890; font-size: 11px; line-height: 1.5; text-align: center; }
+      @media print { body { background: white; } .card { box-shadow: none; } .setup { display: none; } }
+    </style>
+  </head>
+  <body>
+    <div>
+      <article class="card">
+        <p class="eyebrow">A SMALL WARNING</p>
+        <h1>Don’t scan<br />after midnight.</h1>
+        <div class="qr-shell">
+          <img id="qr" alt="QR code for the Halloween surprise" />
+        </div>
+        <p class="prompt">Scan if you dare</p>
+        <p class="hint">There may be something waiting for you.</p>
+      </article>
+      <p class="setup" id="setupText"></p>
+    </div>
+    <script>
+      const params = new URLSearchParams(location.search);
+      const surpriseUrl = params.get("url") || "https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/";
+      const qr = document.querySelector("#qr");
+      qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=8&data=${encodeURIComponent(surpriseUrl)}`;
+      document.querySelector("#setupText").textContent = params.has("url")
+        ? `QR destination: ${surpriseUrl}`
+        : "After publishing, add ?url=YOUR_GITHUB_PAGES_URL to this page address, then print or save the card.";
+    </script>
+  </body>
+</html>
